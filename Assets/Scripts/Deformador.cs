@@ -28,6 +28,7 @@ public class Deformador : MonoBehaviour
     
 
     public float altura = 1.3f;
+    public float altura2 = 1.3f;
 
     void Awake()
     {
@@ -117,15 +118,6 @@ public class Deformador : MonoBehaviour
                 // ajuste por la escala
                 distancia2 *= escala;
 
-                float cantidad2 = 0;
-                cantidad2 = ancho - distancia2;
-                if (cantidad2 < 0) cantidad2 = 0;
-                else
-                {
-                    cantidad2 = Mathf.Sin((cantidad2 / (2 * ancho)) * Mathf.PI);
-                    cantidad2 /= escala;
-                }
-
                 float cantidad = 0;
                 cantidad = ancho - distancia;
                 if (cantidad < 0) cantidad = 0;
@@ -135,8 +127,17 @@ public class Deformador : MonoBehaviour
                     cantidad /= escala;
                 }
 
+                float cantidad2 = 0;
+                cantidad2 = ancho - distancia2;
+                if (cantidad2 < 0) cantidad2 = 0;
+                else
+                {
+                    cantidad2 = Mathf.Sin((cantidad2 / (2 * ancho)) * Mathf.PI);
+                    cantidad2 /= escala;
+                }
+
                 verticesDesplazados[i][j] = verticesOriginales[i][j] + Vector3.up * cantidad * altura;
-                verticesDesplazados[i][j] = verticesDesplazados[i][j] - Vector3.up * cantidad2 * altura;
+                verticesDesplazados[i][j] = verticesDesplazados[i][j] - Vector3.up * cantidad2 * altura2;
 
             }
         }
@@ -159,6 +160,8 @@ public class Deformador : MonoBehaviour
         // actualizo la amplitud
         if (altura < amplitud)
             altura += Time.deltaTime * incrementoAmplitud;
+        if(altura >= amplitud && altura2 < amplitud)
+            altura2 += Time.deltaTime * incrementoAmplitud;
 
         Jugador.instancia.PegarAlSuelo();
     }
@@ -168,6 +171,7 @@ public class Deformador : MonoBehaviour
     public void Lanzar(Vector3 ini, Vector3 dir)
     {
         altura = 0;
+        altura2 = 0;
         puntoDeDeformacion = ini + dir * distanciaAparicion;
         direccion = dir;
         fadeOut = false;
