@@ -8,6 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Escenas/Global.unity
   - enabled: 1
+    path: Assets/Escenas/Title.unity
+  - enabled: 1
     path: Assets/Escenas/test1.unity
   - enabled: 1
     path: Assets/Escenas/test2.unity

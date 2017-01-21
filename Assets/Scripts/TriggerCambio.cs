@@ -2,14 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriggerCambio : MonoBehaviour {
+public class TriggerCambio : MonoBehaviour
+{
+    public Puerta puertaEntrar, puertaSalir;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
         {
-            CambioDeEscena.instancia.SiguienteNivel();
-            gameObject.SetActive(false);
+            StartCoroutine(Secuencia());
+            gameObject.GetComponent<Collider>().enabled = false;
         }
+    }
+
+    IEnumerator Secuencia()
+    {
+        puertaEntrar.Cerrar();
+        yield return new WaitForSeconds(0.5f);
+        CambioDeEscena.instancia.SiguienteNivel();
+        yield return new WaitForSeconds(0.5f);
+        puertaSalir.Abrir();
     }
 }

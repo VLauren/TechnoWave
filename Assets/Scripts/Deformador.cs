@@ -19,10 +19,15 @@ public class Deformador : MonoBehaviour
     Vector3[][] verticesOriginales, verticesDesplazados;
     Mesh[] mallasDeformadas;
 
-    public static float altura = 1.3f;
+    public static float amplitud = 1.3f;
     public static float velocidad = 1.4f;
     public static float ancho = 3;
     public static int unoDeCada = 2;
+    public static float incrementoAmplitud = 10;
+
+    
+
+    public float altura = 1.3f;
 
     void Awake()
     {
@@ -60,11 +65,21 @@ public class Deformador : MonoBehaviour
     }
 
     int cont;
+    bool fadeOut;
+    float contFade;
 
 	void Update () 
 	{
         if (direccion == Vector3.zero)
             return;
+
+        if (fadeOut)
+        {
+            if (contFade <= 0)
+                return;
+            contFade -= Time.deltaTime;
+            altura = amplitud * contFade;
+        }
 
         cont++;
         if (cont >= unoDeCada)
@@ -138,12 +153,24 @@ public class Deformador : MonoBehaviour
 
         // actualizo la posicion de la onda
         puntoDeDeformacion += Time.deltaTime * direccion * velocidad;
+
+        // actualizo la amplitud
+        if (altura < amplitud)
+            altura += Time.deltaTime * incrementoAmplitud;
     }
 
     public void Lanzar(Vector3 ini, Vector3 dir)
     {
+        altura = 0;
         puntoDeDeformacion = ini + dir * 1.5f;
         direccion = dir;
+        fadeOut = false;
+    }
+
+    public void FadeOut()
+    {
+        contFade = 1;
+        fadeOut = true;
     }
 
     // ========================================

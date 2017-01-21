@@ -77,12 +77,21 @@ public class Jugador : MonoBehaviour
     {
         //TODO efectos
         //TODO animacion
+        StartCoroutine(Onda());
+    }
 
+    float delay = 1f;
+
+    IEnumerator Onda()
+    {
+        Deformador.instancia.FadeOut();
+        yield return new WaitForSeconds(delay);
         Deformador.instancia.Lanzar(transform.position, modelo.transform.forward);
     }
 
     public void Saltar()
     {
-        gravedad += new Vector3(0, fuerzaSalto, 0);
+        if(cc.isGrounded)
+            gravedad += new Vector3(0, fuerzaSalto, 0);
     }
 }

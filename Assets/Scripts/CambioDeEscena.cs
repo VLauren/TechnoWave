@@ -18,8 +18,14 @@ public class CambioDeEscena : MonoBehaviour
         SceneManager.LoadScene(indiceNivel, LoadSceneMode.Additive);
     }
 
+    public GameObject jugYCam;
+
     public void SiguienteNivel()
     {
+        // chapuza
+        if(jugYCam != null)
+            jugYCam.SetActive(true);
+
         SceneManager.UnloadSceneAsync(indiceNivel);
         indiceNivel++;
         SceneManager.LoadScene(indiceNivel, LoadSceneMode.Additive);
