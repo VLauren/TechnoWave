@@ -263,7 +263,7 @@ ParticleSystem:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1938439348782740}
   serializedVersion: 5
-  lengthInSec: 8
+  lengthInSec: 4
   speed: 1
   looping: 0
   prewarm: 0
@@ -790,7 +790,7 @@ ParticleSystem:
     enabled: 1
     serializedVersion: 3
     rateOverTime:
-      scalar: 30
+      scalar: 15
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -2900,7 +2900,7 @@ ParticleSystem:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1566310475602914}
   serializedVersion: 5
-  lengthInSec: 8
+  lengthInSec: 6
   speed: 1
   looping: 0
   prewarm: 0
@@ -2948,7 +2948,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -819341972
+  randomSeed: 453521391
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -8222,7 +8222,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1924941298
+  randomSeed: 1748799784
   InitialModule:
     serializedVersion: 3
     enabled: 1

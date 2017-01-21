@@ -123,7 +123,7 @@ public class Jugador : MonoBehaviour
         cargando = false;
 
         // FX
-        Efectos.instancia.FXCrearOnda(ptoLanzar.position);
+        Efectos.instancia.FXCrearOnda(ptoLanzar.position, Quaternion.LookRotation(alante, Vector3.up));
     }
 
     public void Saltar()

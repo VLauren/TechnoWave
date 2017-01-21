@@ -19,9 +19,9 @@ public class Efectos : MonoBehaviour
         Instantiate(cargarOnda, pos, Quaternion.identity);
     }
 
-    public void FXCrearOnda(Vector3 pos)
+    public void FXCrearOnda(Vector3 pos, Quaternion rot)
     {
-        Instantiate(crearOnda, pos, Quaternion.identity);
+        Instantiate(crearOnda, pos, rot * Quaternion.Euler(0,90,0));
     }
 
 }
