@@ -20,10 +20,10 @@ public class Deformador : MonoBehaviour
     Mesh[] mallasDeformadas;
 
     public static float amplitud = 1.3f;
-    public static float velocidad = 1.4f;
+    public static float velocidad = 2.5f;
     public static float ancho = 3;
-    public static int unoDeCada = 2;
-    public static float incrementoAmplitud = 10;
+    public static int unoDeCada = 1;
+    public static float incrementoAmplitud = 2;
 
     
 
@@ -103,6 +103,7 @@ public class Deformador : MonoBehaviour
                 Vector3 pto = PtoMasCercanoALinea(punto, Quaternion.Euler(0, 90, 0) * direccion, verticesOriginales[i][j]);
                 pto = new Vector3(pto.x, verticesOriginales[i][j].y, pto.z);
                 float distancia = Vector3.Distance(pto, verticesOriginales[i][j]);
+                
 
                 // ajuste por la escala
                 distancia *= escala;
@@ -111,10 +112,10 @@ public class Deformador : MonoBehaviour
                 pto = PtoMasCercanoALinea(punto2, Quaternion.Euler(0, 90, 0) * direccion, verticesOriginales[i][j]);
                 pto = new Vector3(pto.x, verticesOriginales[i][j].y, pto.z);
                 float distancia2 = Vector3.Distance(pto, verticesOriginales[i][j]);
+                
 
                 // ajuste por la escala
                 distancia2 *= escala;
-
 
                 float cantidad2 = 0;
                 cantidad2 = ancho - distancia2;
@@ -134,8 +135,6 @@ public class Deformador : MonoBehaviour
                     cantidad /= escala;
                 }
 
-
-
                 verticesDesplazados[i][j] = verticesOriginales[i][j] + Vector3.up * cantidad * altura;
                 verticesDesplazados[i][j] = verticesDesplazados[i][j] - Vector3.up * cantidad2 * altura;
 
@@ -152,17 +151,24 @@ public class Deformador : MonoBehaviour
         }
 
         // actualizo la posicion de la onda
-        puntoDeDeformacion += Time.deltaTime * direccion * velocidad;
+        if(!Jugador.instancia.moviendose)
+            puntoDeDeformacion += Time.deltaTime * direccion * velocidad;
+        else
+            puntoDeDeformacion += Time.deltaTime * direccion * velocidad / 2;
 
         // actualizo la amplitud
         if (altura < amplitud)
             altura += Time.deltaTime * incrementoAmplitud;
+
+        Jugador.instancia.PegarAlSuelo();
     }
+
+    float distanciaAparicion = 2.5f;
 
     public void Lanzar(Vector3 ini, Vector3 dir)
     {
         altura = 0;
-        puntoDeDeformacion = ini + dir * 1.5f;
+        puntoDeDeformacion = ini + dir * distanciaAparicion;
         direccion = dir;
         fadeOut = false;
     }

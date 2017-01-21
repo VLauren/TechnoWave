@@ -29,5 +29,8 @@ public class InputJugador : MonoBehaviour
 
         if(Input.GetButtonDown("Jump"))
             jugador.Saltar();
+
+        //if(jugador.cc.isGrounded)
+            jugador.PegarAlSuelo();
     }
 }

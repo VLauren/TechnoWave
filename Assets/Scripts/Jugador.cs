@@ -13,7 +13,10 @@ public class Jugador : MonoBehaviour
     // referencias
     public Transform modelo { get; private set; }
     public CharacterController cc { get; private set; }
-    private Animator anim;
+    public bool moviendose { get; private set; }
+
+    Animator anim;
+    Transform ptoLanzar;
 
     public float velocidad, fuerzaSalto;
 
@@ -24,6 +27,7 @@ public class Jugador : MonoBehaviour
         instancia = this;
         anim = GetComponentInChildren<Animator>();
         cc = GetComponent<CharacterController>();
+        ptoLanzar = transform.Find("Modelo/PuntoLanzar");
     }
 
     private Vector3 movimiento;
@@ -44,11 +48,21 @@ public class Jugador : MonoBehaviour
         anim.SetBool(NOMBRE_ANIM_SUELO, cc.isGrounded);
     }
 
-    private Quaternion rotObjetivo;
+    Quaternion rotObjetivo;
+    bool cargando;
 
     // convierte vector de dirección en movimiento del jugador
     public void Mover(Vector3 direccion)
     {
+        if (cargando)
+        {
+            modelo.rotation = Quaternion.RotateTowards(modelo.rotation, rotObjetivo, Time.deltaTime * 360);
+            movimiento = Vector3.zero;
+            if (anim)
+                anim.SetFloat(NOMBRE_ANIM_VELOCIDAD, 0);
+            return;
+        }
+
         if (direccion != Vector3.zero)
         {
             // rotacion del modelo
@@ -64,7 +78,10 @@ public class Jugador : MonoBehaviour
 
             // el movimiento es relativo a la direccion de la cámara
             direccion = Quaternion.Euler(0, rCam, 0) * direccion;
+            moviendose = true;
         }
+        else
+            moviendose = false;
 
         if (anim)
             anim.SetFloat(NOMBRE_ANIM_VELOCIDAD, direccion.magnitude);
@@ -80,18 +97,52 @@ public class Jugador : MonoBehaviour
         StartCoroutine(Onda());
     }
 
-    float delay = 1f;
+    float delay = 1.5f;
 
     IEnumerator Onda()
     {
+        // onda anterior -> fuera
         Deformador.instancia.FadeOut();
+
+        // FX
+        Efectos.instancia.FXCargarOnda(ptoLanzar.position);
+
+        // el personaje se gira hacia donde apunta la camara
+        cargando = true;
+        Vector3 alante = Camera.main.transform.forward;
+        alante.y = 0;
+        rotObjetivo = Quaternion.LookRotation(alante, Vector3.up);
+        if (modelo)
+            modelo.rotation = Quaternion.RotateTowards(modelo.rotation, rotObjetivo, Time.deltaTime * 360);
+
+        // mespero
         yield return new WaitForSeconds(delay);
-        Deformador.instancia.Lanzar(transform.position, modelo.transform.forward);
+
+        // inicio la deformacion
+        Deformador.instancia.Lanzar(transform.position, alante);
+        cargando = false;
+
+        // FX
+        Efectos.instancia.FXCrearOnda(ptoLanzar.position);
     }
 
     public void Saltar()
     {
         if(cc.isGrounded)
             gravedad += new Vector3(0, fuerzaSalto, 0);
+    }
+
+    public void PegarAlSuelo()
+    {
+        if (!cc.isGrounded)
+            return;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + Vector3.up * 2, -Vector3.up, out hit))
+        {
+            float dif = hit.point.y - transform.position.y + 0.765f;
+            if (dif < 0.15f && dif > 0)
+                transform.position = hit.point + Vector3.up * 0.765f;
+        }
     }
 }

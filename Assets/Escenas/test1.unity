@@ -500,9 +500,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objetosDeformables: {fileID: 1043717957}
   altura: 1.2
-  velocidad: 1.8
-  ancho: 3
-  unoDeCada: 2
 --- !u!1001 &1911431782
 Prefab:
   m_ObjectHideFlags: 0
