@@ -115,6 +115,9 @@ public class Jugador : MonoBehaviour
         if (modelo)
             modelo.rotation = Quaternion.RotateTowards(modelo.rotation, rotObjetivo, Time.deltaTime * 360);
 
+        // zoom
+        StartCoroutine(ZoomCam(110, delay));
+
         // mespero
         yield return new WaitForSeconds(delay);
 
@@ -124,6 +127,28 @@ public class Jugador : MonoBehaviour
 
         // FX
         Efectos.instancia.FXCrearOnda(ptoLanzar.position, Quaternion.LookRotation(alante, Vector3.up));
+
+        yield return new WaitForSeconds(0.2f);
+        // des-zoom
+        StartCoroutine(ZoomCam(75, 0.1f));
+
+        // cam shakeeee
+        TemblorCamara.instancia.Temblor();
+    }
+
+    IEnumerator ZoomCam(float anguloObj, float tiempo)
+    {
+        float fovIni = Camera.main.fieldOfView;
+        float gradosPorSegundo = (anguloObj - fovIni) / tiempo;
+        float cont = 0;
+        while(cont < tiempo)
+        {
+            Camera.main.fieldOfView += Time.deltaTime * gradosPorSegundo;
+            cont += Time.deltaTime;
+
+            yield return null;
+        }
+        Camera.main.fieldOfView = anguloObj;
     }
 
     public void Saltar()
