@@ -64,6 +64,8 @@ public class Deformador : MonoBehaviour
         for (int i = 0; i < verticesOriginales.Length; i++)
         {
             Vector3 punto = objetos[i].transform.InverseTransformPoint(puntoDeDeformacion);
+            float escala = objetos[i].transform.localScale.x;
+
             // por cada punto
             for (int j = 0; j < verticesOriginales[i].Length; j++)
             {
@@ -71,8 +73,13 @@ public class Deformador : MonoBehaviour
                 Vector3 pto = PtoMasCercanoALina(punto, Quaternion.Euler(0,90,0) * direccion, verticesOriginales[i][j]);
                 float distancia = Vector3.Distance(pto, verticesOriginales[i][j]);
 
+                // ajuste por la escala
+                distancia *= escala;
+
                 float cantidad = ancho - distancia;
                 if (cantidad < 0) cantidad = 0;
+                else
+                    cantidad /= escala;
 
                 // asigno el nuevo punto
                 verticesDesplazados[i][j] = verticesOriginales[i][j] - Vector3.up * cantidad * altura;
