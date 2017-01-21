@@ -83,7 +83,7 @@ public class Deformador : MonoBehaviour
             for (int j = 0; j < verticesOriginales[i].Length; j++)
             {
                 // calculo cuanto debo deformar A
-                Vector3 pto = PtoMasCercanoALinea(punto, Quaternion.Euler(0,90,0) * direccion, verticesOriginales[i][j]);
+                Vector3 pto = PtoMasCercanoALinea(punto, Quaternion.Euler(0, 90, 0) * direccion, verticesOriginales[i][j]);
                 pto = new Vector3(pto.x, verticesOriginales[i][j].y, pto.z);
                 float distancia = Vector3.Distance(pto, verticesOriginales[i][j]);
 
@@ -98,17 +98,26 @@ public class Deformador : MonoBehaviour
                 // ajuste por la escala
                 distancia2 *= escala;
 
+
                 float cantidad2 = 0;
                 cantidad2 = ancho - distancia2;
                 if (cantidad2 < 0) cantidad2 = 0;
                 else
+                {
+                    cantidad2 = Mathf.Sin((cantidad2 / (2 * ancho)) * Mathf.PI);
                     cantidad2 /= escala;
-                
+                }
+
                 float cantidad = 0;
                 cantidad = ancho - distancia;
                 if (cantidad < 0) cantidad = 0;
                 else
+                {
+                    cantidad = Mathf.Sin((cantidad/(2 * ancho)) * Mathf.PI);
                     cantidad /= escala;
+                }
+
+
 
                 verticesDesplazados[i][j] = verticesOriginales[i][j] + Vector3.up * cantidad * altura;
                 verticesDesplazados[i][j] = verticesDesplazados[i][j] - Vector3.up * cantidad2 * altura;

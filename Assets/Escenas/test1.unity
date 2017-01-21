@@ -499,7 +499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objetosDeformables: {fileID: 1043717957}
-  altura: 0.6
+  altura: 1.2
   velocidad: 1.8
   ancho: 3
   unoDeCada: 2
