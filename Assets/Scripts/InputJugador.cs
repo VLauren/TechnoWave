@@ -26,5 +26,8 @@ public class InputJugador : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
             jugador.LanzarOnda();
+
+        if(Input.GetButtonDown("Jump"))
+            jugador.Saltar();
     }
 }

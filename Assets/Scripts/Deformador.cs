@@ -71,8 +71,7 @@ public class Deformador : MonoBehaviour
             // por cada punto
             for (int j = 0; j < verticesOriginales[i].Length; j++)
             {
-                
-                // calculo cuanto debo deformar
+                // calculo cuanto debo deformar A
                 Vector3 pto = PtoMasCercanoALinea(punto, Quaternion.Euler(0,90,0) * direccion, verticesOriginales[i][j]);
                 pto = new Vector3(pto.x, verticesOriginales[i][j].y, pto.z);
                 float distancia = Vector3.Distance(pto, verticesOriginales[i][j]);
@@ -80,47 +79,28 @@ public class Deformador : MonoBehaviour
                 // ajuste por la escala
                 distancia *= escala;
 
+                // calculo cuanto debo deformar B
+                pto = PtoMasCercanoALinea(punto2, Quaternion.Euler(0, 90, 0) * direccion, verticesOriginales[i][j]);
+                pto = new Vector3(pto.x, verticesOriginales[i][j].y, pto.z);
+                float distancia2 = Vector3.Distance(pto, verticesOriginales[i][j]);
+
+                // ajuste por la escala
+                distancia2 *= escala;
+
+                float cantidad2 = 0;
+                cantidad2 = ancho - distancia2;
+                if (cantidad2 < 0) cantidad2 = 0;
+                else
+                    cantidad2 /= escala;
+                
                 float cantidad = 0;
                 cantidad = ancho - distancia;
                 if (cantidad < 0) cantidad = 0;
                 else
                     cantidad /= escala;
 
-                //cantidad = Mathf.Sin(Mathf.PI * cantidad);
-
                 verticesDesplazados[i][j] = verticesOriginales[i][j] + Vector3.up * cantidad * altura;
-                // ===============================
-
-                // calculo cuanto debo deformar
-                pto = PtoMasCercanoALinea(punto2, Quaternion.Euler(0, 90, 0) * direccion, verticesOriginales[i][j]);
-                pto = new Vector3(pto.x, verticesOriginales[i][j].y, pto.z);
-                distancia = Vector3.Distance(pto, verticesOriginales[i][j]);
-
-                // ajuste por la escala
-                distancia *= escala;
-
-                float cantidad2 = 0;
-                cantidad2 = ancho - distancia;
-                if (cantidad2 < 0) cantidad2 = 0;
-                else
-                    cantidad2 /= escala;
-                
-
-                /*
-                pto = PtoMasCercanoALinea(punto2, Quaternion.Euler(0, 90, 0) * direccion, verticesOriginales[i][j]);
-                pto = new Vector3(pto.x, verticesOriginales[i][j].y, pto.z);
-                float distancia2 = Vector3.Distance(pto, verticesOriginales[i][j]);
-                float cantidad2 = ancho - distancia2;
-                if (cantidad2 < 0) cantidad2 = 0;
-                else
-                    cantidad2 /= escala;
-                */
-
-                // asigno el nuevo punto
-                //if(delante)
                 verticesDesplazados[i][j] = verticesDesplazados[i][j] - Vector3.up * cantidad2 * altura;
-               /* else
-                    verticesDesplazados[i][j] = verticesOriginales[i][j] + Vector3.up * cantidad * altura;*/
 
             }
         }

@@ -14,7 +14,7 @@ public class Jugador : MonoBehaviour
     public CharacterController cc { get; private set; }
     private Animator anim;
 
-    public float velocidad;
+    public float velocidad, fuerzaSalto;
 
     void Start()
     {
@@ -27,12 +27,12 @@ public class Jugador : MonoBehaviour
 
     private Vector3 movimiento;
     private Vector3 gravedad;
-    private float accelGravedad = 0.7f;
+    public float accelGravedad = 0.7f;
 
     void FixedUpdate()
     {
         // gravedad
-        if (cc.isGrounded)
+        if (cc.isGrounded && gravedad.y < 0)
             gravedad = Vector3.zero;
         gravedad += new Vector3(0, -accelGravedad * Time.fixedDeltaTime, 0);
 
@@ -78,5 +78,10 @@ public class Jugador : MonoBehaviour
         //TODO animacion
 
         Deformador.instancia.Lanzar(transform.position, modelo.transform.forward);
+    }
+
+    public void Saltar()
+    {
+        gravedad += new Vector3(0, fuerzaSalto, 0);
     }
 }
