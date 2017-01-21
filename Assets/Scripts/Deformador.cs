@@ -13,7 +13,7 @@ public class Deformador : MonoBehaviour
 
     // =========================================
 
-    Vector3 puntoDeDeformacion;
+    Vector3 puntoDeDeformacion, puntoDeDeformacion2;
     Vector3 direccion = Vector3.zero;
 
     Vector3[][] verticesOriginales, verticesDesplazados;
@@ -31,7 +31,7 @@ public class Deformador : MonoBehaviour
 
 	void Start ()
 	{
-        puntoDeDeformacion = new Vector3(-1, 0, 0);
+        //puntoDeDeformacion = new Vector3(-1, 0, 0);
 
         mallasDeformadas = new Mesh[objetos.Count];
         verticesOriginales = new Vector3[objetos.Count][];
@@ -59,30 +59,69 @@ public class Deformador : MonoBehaviour
         if (direccion == Vector3.zero)
             return;
 
+        puntoDeDeformacion2 = puntoDeDeformacion - direccion * ancho * 2;
 
         // por cada objeto
         for (int i = 0; i < verticesOriginales.Length; i++)
         {
             Vector3 punto = objetos[i].transform.InverseTransformPoint(puntoDeDeformacion);
+            Vector3 punto2 = objetos[i].transform.InverseTransformPoint(puntoDeDeformacion2);
             float escala = objetos[i].transform.localScale.x;
 
             // por cada punto
             for (int j = 0; j < verticesOriginales[i].Length; j++)
             {
+                
                 // calculo cuanto debo deformar
-                Vector3 pto = PtoMasCercanoALina(punto, Quaternion.Euler(0,90,0) * direccion, verticesOriginales[i][j]);
+                Vector3 pto = PtoMasCercanoALinea(punto, Quaternion.Euler(0,90,0) * direccion, verticesOriginales[i][j]);
+                pto = new Vector3(pto.x, verticesOriginales[i][j].y, pto.z);
                 float distancia = Vector3.Distance(pto, verticesOriginales[i][j]);
 
                 // ajuste por la escala
                 distancia *= escala;
 
-                float cantidad = ancho - distancia;
+                float cantidad = 0;
+                cantidad = ancho - distancia;
                 if (cantidad < 0) cantidad = 0;
                 else
                     cantidad /= escala;
 
+                //cantidad = Mathf.Sin(Mathf.PI * cantidad);
+
+                verticesDesplazados[i][j] = verticesOriginales[i][j] + Vector3.up * cantidad * altura;
+                // ===============================
+
+                // calculo cuanto debo deformar
+                pto = PtoMasCercanoALinea(punto2, Quaternion.Euler(0, 90, 0) * direccion, verticesOriginales[i][j]);
+                pto = new Vector3(pto.x, verticesOriginales[i][j].y, pto.z);
+                distancia = Vector3.Distance(pto, verticesOriginales[i][j]);
+
+                // ajuste por la escala
+                distancia *= escala;
+
+                float cantidad2 = 0;
+                cantidad2 = ancho - distancia;
+                if (cantidad2 < 0) cantidad2 = 0;
+                else
+                    cantidad2 /= escala;
+                
+
+                /*
+                pto = PtoMasCercanoALinea(punto2, Quaternion.Euler(0, 90, 0) * direccion, verticesOriginales[i][j]);
+                pto = new Vector3(pto.x, verticesOriginales[i][j].y, pto.z);
+                float distancia2 = Vector3.Distance(pto, verticesOriginales[i][j]);
+                float cantidad2 = ancho - distancia2;
+                if (cantidad2 < 0) cantidad2 = 0;
+                else
+                    cantidad2 /= escala;
+                */
+
                 // asigno el nuevo punto
-                verticesDesplazados[i][j] = verticesOriginales[i][j] - Vector3.up * cantidad * altura;
+                //if(delante)
+                verticesDesplazados[i][j] = verticesDesplazados[i][j] - Vector3.up * cantidad2 * altura;
+               /* else
+                    verticesDesplazados[i][j] = verticesOriginales[i][j] + Vector3.up * cantidad * altura;*/
+
             }
         }
 
@@ -101,13 +140,13 @@ public class Deformador : MonoBehaviour
 
     public void Lanzar(Vector3 ini, Vector3 dir)
     {
-        puntoDeDeformacion = ini;
+        puntoDeDeformacion = ini + dir * 1.5f;
         direccion = dir;
     }
 
     // ========================================
 
-    public static Vector3 PtoMasCercanoALina(Vector3 lineaPtn, Vector3 lineaDir, Vector3 ptn)
+    public static Vector3 PtoMasCercanoALinea(Vector3 lineaPtn, Vector3 lineaDir, Vector3 ptn)
     {
         lineaDir.Normalize();
         var v = ptn - lineaPtn;
@@ -115,11 +154,28 @@ public class Deformador : MonoBehaviour
         return lineaPtn + lineaDir * d;
     }
 
+    /*
+    public static Vector3 PtoMasCercanoAPlano(Vector3 lineaPtn, Vector3 lineaDir, Vector3 ptn)
+    {
+        Vector3 lnDir = new Vector3(lineaDir.x, 0, lineaDir.z);
+        Vector3 lnPtn = new Vector3(lineaPtn.x, 0, lineaPtn.z);
+        Vector3 punto = new Vector3(ptn.x, 0, ptn.z);
+
+        lnDir.Normalize();
+        var v = punto - lnPtn;
+        var d = Vector3.Dot(v, lnDir);
+        return lnPtn + lnDir * d;
+    }
+    */
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.black;
         Gizmos.DrawSphere(puntoDeDeformacion, 0.1f);
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(puntoDeDeformacion+direccion, 0.1f);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(puntoDeDeformacion2, 0.1f);
     }
 }
