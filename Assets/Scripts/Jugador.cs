@@ -6,6 +6,7 @@ public class Jugador : MonoBehaviour
 {
     private const string NOMBRE_MODELO = "Modelo";
     private const string NOMBRE_ANIM_VELOCIDAD = "Velocidad";
+    private const string NOMBRE_ANIM_SUELO = "Suelo";
 
     public static Jugador instancia { get; private set; }
 
@@ -40,7 +41,7 @@ public class Jugador : MonoBehaviour
         if (cc)
             cc.Move(movimiento + gravedad);
 
-        //anim.SetBool("Suelo", cc.isGrounded);
+        anim.SetBool(NOMBRE_ANIM_SUELO, cc.isGrounded);
     }
 
     private Quaternion rotObjetivo;
@@ -65,8 +66,8 @@ public class Jugador : MonoBehaviour
             direccion = Quaternion.Euler(0, rCam, 0) * direccion;
         }
 
-        //if (anim)
-        //    anim.SetFloat(NOMBRE_ANIM_VELOCIDAD, direccion.magnitude);
+        if (anim)
+            anim.SetFloat(NOMBRE_ANIM_VELOCIDAD, direccion.magnitude);
 
         // actualiza el vector de movimiento
         movimiento = direccion * Time.fixedDeltaTime * velocidad;

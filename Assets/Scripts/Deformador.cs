@@ -19,8 +19,11 @@ public class Deformador : MonoBehaviour
     Vector3[][] verticesOriginales, verticesDesplazados;
     Mesh[] mallasDeformadas;
 
-    public float altura, velocidad, ancho;
-     
+    public static float altura = 1.3f;
+    public static float velocidad = 1.4f;
+    public static float ancho = 3;
+    public static int unoDeCada = 2;
+
     void Awake()
     {
         instancia = this;
@@ -57,7 +60,6 @@ public class Deformador : MonoBehaviour
     }
 
     int cont;
-    public int unoDeCada = 3;
 
 	void Update () 
 	{
