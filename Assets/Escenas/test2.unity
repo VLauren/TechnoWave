@@ -1207,6 +1207,7 @@ MonoBehaviour:
   altura: 0.6
   velocidad: 1.8
   ancho: 3
+  unoDeCada: 2
 --- !u!1001 &1748854033
 Prefab:
   m_ObjectHideFlags: 0
