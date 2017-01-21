@@ -27,6 +27,8 @@ public class Deformador : MonoBehaviour
         objetos = new List<GameObject>();
         foreach (Transform t in objetosDeformables)
             objetos.Add(t.gameObject);
+
+        velocidad += unoDeCada;
     }
 
 	void Start ()
@@ -53,10 +55,19 @@ public class Deformador : MonoBehaviour
                 verticesDesplazados[i][j] = verticesOriginales[i][j];
         }
     }
-	
+
+    int cont;
+    public int unoDeCada = 3;
+
 	void Update () 
 	{
         if (direccion == Vector3.zero)
+            return;
+
+        cont++;
+        if (cont >= unoDeCada)
+            cont = 0;
+        else
             return;
 
         puntoDeDeformacion2 = puntoDeDeformacion - direccion * ancho * 2;

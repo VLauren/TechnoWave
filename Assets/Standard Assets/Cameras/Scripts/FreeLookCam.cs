@@ -76,6 +76,9 @@ namespace UnityStandardAssets.Cameras
             var x = CrossPlatformInputManager.GetAxis("Mouse X");
             var y = CrossPlatformInputManager.GetAxis("Mouse Y");
 
+            x += Input.GetAxis("Vertical2") * 2;
+            y -= Input.GetAxis("Horizontal2") * 1.5f;
+
             // Adjust the look angle by an amount proportional to the turn speed and horizontal input.
             m_LookAngle += x*m_TurnSpeed;
 
