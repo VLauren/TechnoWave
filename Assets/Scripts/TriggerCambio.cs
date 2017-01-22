@@ -23,9 +23,11 @@ public class TriggerCambio : MonoBehaviour
     IEnumerator Secuencia()
     {
         puertaEntrar.Cerrar();
+        Sonido.instancia.Play("puerta");
         yield return new WaitForSeconds(0.5f);
         CambioDeEscena.instancia.SiguienteNivel();
         yield return new WaitForSeconds(0.5f);
+        Sonido.instancia.Play("puerta");
         puertaSalir.Abrir();
     }
 }
