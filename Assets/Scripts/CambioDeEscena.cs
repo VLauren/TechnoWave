@@ -9,6 +9,8 @@ public class CambioDeEscena : MonoBehaviour
 
     Scene escenaActual;
     int indiceNivel;
+    public GameObject jugYCam;
+    //Vector3 posIni;
 
     private void Awake()
     {
@@ -16,9 +18,9 @@ public class CambioDeEscena : MonoBehaviour
         indiceNivel = 1;
 
         SceneManager.LoadScene(indiceNivel, LoadSceneMode.Additive);
+        //posIni = jugYCam.transform.position;
     }
 
-    public GameObject jugYCam;
 
     public void SiguienteNivel()
     {
@@ -26,8 +28,13 @@ public class CambioDeEscena : MonoBehaviour
         indiceNivel++;
         SceneManager.LoadScene(indiceNivel, LoadSceneMode.Additive);
 
-        // chapuza
         if(jugYCam != null)
             jugYCam.SetActive(true);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 }
