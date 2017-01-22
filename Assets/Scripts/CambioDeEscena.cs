@@ -35,6 +35,24 @@ public class CambioDeEscena : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            MusicaA();
             SceneManager.LoadScene(0, LoadSceneMode.Single);
+        }
     }
+
+    public GameObject mA, mB;
+
+    public void MusicaA()
+    {
+        mA.SetActive(true);
+        mB.SetActive(false);
+    }
+
+    public void MusicaB()
+    {
+        mA.SetActive(false);
+        mB.SetActive(true);
+    }
+
 }

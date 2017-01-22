@@ -7,6 +7,8 @@ public class Jugador : MonoBehaviour
     private const string NOMBRE_MODELO = "Modelo";
     private const string NOMBRE_ANIM_VELOCIDAD = "Velocidad";
     private const string NOMBRE_ANIM_SUELO = "Suelo";
+    private const string NOMBRE_ANIM_SHOOTA = "ShootA";
+    private const string NOMBRE_ANIM_SHOOTB = "ShootB";
 
     public static Jugador instancia { get; private set; }
 
@@ -14,9 +16,11 @@ public class Jugador : MonoBehaviour
     public Transform modelo { get; private set; }
     public CharacterController cc { get; private set; }
     public bool moviendose { get; private set; }
+    public bool TWBBlock = true;
 
     Animator anim;
-    Transform ptoLanzar;
+    public Transform ptoLanzar;
+    public GameObject TWBEquipado;
 
     public float velocidad, fuerzaSalto;
 
@@ -27,12 +31,17 @@ public class Jugador : MonoBehaviour
         instancia = this;
         anim = GetComponentInChildren<Animator>();
         cc = GetComponent<CharacterController>();
-        ptoLanzar = transform.Find("Modelo/PuntoLanzar");
+        //ptoLanzar = transform.Find("Modelo/PuntoLanzar");
     }
 
     private Vector3 movimiento;
     private Vector3 gravedad;
     public float accelGravedad = 0.7f;
+    float contPaso;
+    /*float tPaso = (2.4f/20f)*50;
+    float iniPaso = (2.4f/10)*50;*/
+    float tPaso = 0.38f;
+    float iniPaso = 0.19f;
 
     void FixedUpdate()
     {
@@ -46,6 +55,18 @@ public class Jugador : MonoBehaviour
             cc.Move(movimiento + gravedad);
 
         anim.SetBool(NOMBRE_ANIM_SUELO, cc.isGrounded);
+
+        if (moviendose && cc.isGrounded)
+        {
+            contPaso += Time.fixedDeltaTime;
+            if (contPaso >= tPaso)
+            {
+                Sonido.instancia.Paso();
+                contPaso = 0;
+            }
+        }
+        else
+            contPaso = iniPaso;
     }
 
     Quaternion rotObjetivo;
@@ -92,9 +113,8 @@ public class Jugador : MonoBehaviour
 
     public void LanzarOnda()
     {
-        //TODO efectos
-        //TODO animacion
-        StartCoroutine(Onda());
+        if(!cargando && !TWBBlock)
+            StartCoroutine(Onda());
     }
 
     float delay = 1.5f;
@@ -104,8 +124,12 @@ public class Jugador : MonoBehaviour
         // onda anterior -> fuera
         Deformador.instancia.FadeOut();
 
+        // Anim
+        if (anim)
+            anim.SetTrigger(NOMBRE_ANIM_SHOOTA);
+
         // FX
-        Efectos.instancia.FXCargarOnda(ptoLanzar.position);
+        Efectos.instancia.FXCargarOnda(ptoLanzar);
 
         // el personaje se gira hacia donde apunta la camara
         cargando = true;
@@ -118,15 +142,24 @@ public class Jugador : MonoBehaviour
         // zoom
         StartCoroutine(ZoomCam(110, delay));
 
+        // sonido
+        Sonido.instancia.Play("carga",0.5f);
+
         // mespero
         yield return new WaitForSeconds(delay);
 
         // inicio la deformacion
         Deformador.instancia.Lanzar(transform.position, alante);
-        cargando = false;
 
         // FX
         Efectos.instancia.FXCrearOnda(ptoLanzar.position, Quaternion.LookRotation(alante, Vector3.up));
+
+        // sonido
+        Sonido.instancia.Play("disparo");
+
+        // Anim
+        if (anim)
+            anim.SetTrigger(NOMBRE_ANIM_SHOOTB);
 
         yield return new WaitForSeconds(0.2f);
         // des-zoom
@@ -134,6 +167,7 @@ public class Jugador : MonoBehaviour
 
         // cam shakeeee
         TemblorCamara.instancia.Temblor();
+        cargando = false;
     }
 
     IEnumerator ZoomCam(float anguloObj, float tiempo)

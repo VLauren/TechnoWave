@@ -8,7 +8,10 @@ public class Titulo : MonoBehaviour
     {
         // cualquier tecla -> go
         if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
+        {
+            CambioDeEscena.instancia.MusicaB();
             CambioDeEscena.instancia.SiguienteNivel();
+        }
 
         // escape -> salir
         if (Input.GetKeyDown(KeyCode.Escape))

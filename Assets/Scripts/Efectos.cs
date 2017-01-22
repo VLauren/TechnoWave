@@ -8,20 +8,26 @@ public class Efectos : MonoBehaviour
 
     public GameObject cargarOnda;
     public GameObject crearOnda;
+    public GameObject pillarTWB;
 
     private void Awake()
     {
         instancia = this;
     }
 
-    public void FXCargarOnda(Vector3 pos)
+    public void FXCargarOnda(Transform pos)
     {
-        Instantiate(cargarOnda, pos, Quaternion.identity);
+        GameObject fx = Instantiate(cargarOnda, pos.position, Quaternion.identity);
+        fx.transform.parent = pos;
     }
 
     public void FXCrearOnda(Vector3 pos, Quaternion rot)
     {
-        Instantiate(crearOnda, pos, rot * Quaternion.Euler(0,90,0));
+        Instantiate(crearOnda, pos, rot * Quaternion.Euler(0, 90, 0));
     }
 
+    public void PillarTWB(Vector3 pos)
+    {
+        Instantiate(pillarTWB, pos, Quaternion.identity);
+    }
 }
