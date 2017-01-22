@@ -143,7 +143,7 @@ public class Jugador : MonoBehaviour
         StartCoroutine(ZoomCam(110, delay));
 
         // sonido
-        Sonido.instancia.Play("carga",0.5f);
+        Sonido.instancia.Play("carga",0.25f);
 
         // mespero
         yield return new WaitForSeconds(delay);
@@ -155,7 +155,7 @@ public class Jugador : MonoBehaviour
         Efectos.instancia.FXCrearOnda(ptoLanzar.position, Quaternion.LookRotation(alante, Vector3.up));
 
         // sonido
-        Sonido.instancia.Play("disparo");
+        Sonido.instancia.Play("disparo", 2);
 
         // Anim
         if (anim)

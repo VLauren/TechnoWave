@@ -6,6 +6,11 @@ public class TriggerCambio : MonoBehaviour
 {
     public Puerta puertaEntrar, puertaSalir;
 
+    private void Start()
+    {
+        puertaEntrar.Abrir();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4772994794123096}
   - component: {fileID: 33025051759684626}
   - component: {fileID: 23029862560526258}
+  - component: {fileID: 64233400797120136}
   m_Layer: 0
   m_Name: Arbol01
   m_TagString: Untagged
@@ -34,9 +35,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1256172403302206}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -28.765722, y: 1.628, z: 1.0777011}
-  m_LocalScale: {x: 1.48, y: 1.4800001, z: 1.4800001}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.35, y: 2.23, z: -13.26}
+  m_LocalScale: {x: 3.4457898, y: 3.4457898, z: 3.4457898}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -78,4 +79,18 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1256172403302206}
+  m_Mesh: {fileID: 4300000, guid: 0dedfedc1cafeba4ead5d4e5c4aa4e19, type: 3}
+--- !u!64 &64233400797120136
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1256172403302206}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 0dedfedc1cafeba4ead5d4e5c4aa4e19, type: 3}

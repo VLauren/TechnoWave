@@ -26,9 +26,12 @@ public class CambioDeEscena : MonoBehaviour
     {
         SceneManager.UnloadSceneAsync(indiceNivel);
         indiceNivel++;
-        SceneManager.LoadScene(indiceNivel, LoadSceneMode.Additive);
+        if (indiceNivel <= 4)
+            SceneManager.LoadScene(indiceNivel, LoadSceneMode.Additive);
+        else
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
 
-        if(jugYCam != null)
+        if (jugYCam != null)
             jugYCam.SetActive(true);
     }
 
